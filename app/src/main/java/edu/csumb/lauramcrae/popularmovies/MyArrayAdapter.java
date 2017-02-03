@@ -54,7 +54,7 @@ public class MyArrayAdapter extends ArrayAdapter<MovieItem> {
         ImageView iconView = (ImageView) convertView.findViewById(R.id.list_movie_item);
         iconView.setImageResource(movieItem.image);
 
-        TextView titleNameView = (TextView) convertView.findViewById(R.id.list_movie_item_title);
+        TextView titleNameView = (TextView) convertView.findViewById(R.id.list_movie_title);
         titleNameView.setText(movieItem.title);
 
         return convertView;
