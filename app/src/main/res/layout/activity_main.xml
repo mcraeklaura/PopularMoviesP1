@@ -10,16 +10,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="edu.csumb.lauramcrae.popularmovies.MainActivity">
 
-    <GridView
-        android:id="@+id/grid_view_main"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:columnWidth="135dp"
-        android:numColumns="auto_fit"
-        android:verticalSpacing="10dp"
-        android:horizontalSpacing="10dp"
-        android:stretchMode="columnWidth"
-        android:gravity="center"
-        ></GridView>
+
 
 </RelativeLayout>

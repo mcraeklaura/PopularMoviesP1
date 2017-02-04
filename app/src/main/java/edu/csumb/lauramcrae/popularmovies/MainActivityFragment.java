@@ -47,10 +47,6 @@ public class MainActivityFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
-        savedInstanceState.
-        GridView gridview = (GridView) super.findViewById(R.id.grid_view_main);
-        gridview.set;
     }
 
 

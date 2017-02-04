@@ -21,8 +21,6 @@ public class MainActivity extends AppCompatActivity {
                     .add(R.id.container, new MainActivityFragment())
                     .commit();
         }
-        GridView gridview = (GridView) findViewById(R.id.grid_view_main);
-        gridview.set;
     }
 
     @Override
