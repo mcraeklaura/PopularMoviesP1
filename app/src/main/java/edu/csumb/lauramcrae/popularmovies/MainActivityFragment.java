@@ -13,8 +13,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.ListView;
 
+import java.io.BufferedReader;
+import java.net.HttpURLConnection;
 import java.util.Arrays;
 
 public class MainActivityFragment extends Fragment {
@@ -35,6 +38,7 @@ public class MainActivityFragment extends Fragment {
             new MovieItem("Jelly Bean", 0),
             new MovieItem("KitKat", 0),
             new MovieItem("Lollipop", 0)
+    };
 
     public MainActivityFragment(){
 
@@ -43,6 +47,10 @@ public class MainActivityFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        savedInstanceState.
+        GridView gridview = (GridView) super.findViewById(R.id.grid_view_main);
+        gridview.set;
     }
 
 
@@ -57,9 +65,9 @@ public class MainActivityFragment extends Fragment {
         arrayAdapter = new MyArrayAdapter(getActivity(), Arrays.asList(androidFlavors));
 
         //Get a reference to the ListView, and attatch this adapter to it.
-        ListView listView = (ListView) rootView.findViewById(R.id.listview_flavor);
-        listView.setAdapter(arrayAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+        GridView gridView = (GridView) rootView.findViewById(R.id.grid_view_main);
+        gridView.setAdapter(arrayAdapter);
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 MovieItem movieItem = arrayAdapter.getItem(position);
@@ -89,7 +97,7 @@ public class MainActivityFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    //TODO Complete
+    //TODO Complete this when the fragment is complete
     private void updateMovies(){
 
 
@@ -109,6 +117,38 @@ public class MainActivityFragment extends Fragment {
 
         //The name of the class, because if oyu rename the class, you
         //always want it to stay the same name everywhere
+        private final String LOG_TAG = MainActivityFragment.class.getSimpleName();
+
+        protected String[] doInBackground(String ... params){
+//            if(params.length == 0){
+//                return null;
+//            }
+//
+//            //These two need to be declared outside the try/catch
+//            //so that they can be closed in the finally block
+//            HttpURLConnection urlConnection = null;
+//            BufferedReader reader = null;
+//
+//            //Will contain the raw JSON response as a string
+//            String movieJsonStr = null;
+//
+//            //API Usage to be under here
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String[] result){
+
+            if(result != null){
+                arrayAdapter.clear();
+                for(int i = 0; i < androidFlavors.length; i++){
+                    arrayAdapter.add(androidFlavors[i]);
+                }
+            }
+
+        }
+
+
 
     }
 
