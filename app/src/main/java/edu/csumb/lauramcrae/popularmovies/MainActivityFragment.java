@@ -43,7 +43,7 @@ import java.util.Arrays;
 
 public class MainActivityFragment extends Fragment {
 
-    private String API_KEY = "";
+    private String API_KEY = "76390e37292e31aa4b2f0f32cb375f2c";
     private MyArrayAdapter arrayAdapter;
     private Context context;
 
