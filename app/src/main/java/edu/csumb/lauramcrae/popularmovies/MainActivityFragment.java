@@ -74,14 +74,16 @@ public class MainActivityFragment extends Fragment {
                 new ArrayList<MovieItem>()
         );
 
-        //Get a reference to the ListView, and attatch this adapter to it.
+        //Get a reference to the ListView, and attach this adapter to it.
         GridView gridView = (GridView) rootView.findViewById(R.id.grid_view_main);
         gridView.setAdapter(arrayAdapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                // Putting the movie into the extra to use in the Detail Activity
                 MovieItem movieItem = arrayAdapter.getItem(position);
-                Intent i = new Intent(getActivity(), DetailActivity.class).putExtra("MovieItem", movieItem.title);
+                Intent i = new Intent(getActivity(), DetailActivity.class);
+                i.putExtra("myData", movieItem);
                 startActivity(i);
             }
         });
@@ -109,9 +111,10 @@ public class MainActivityFragment extends Fragment {
 
     //TODO Complete this when the fragment is complete
     private void updateMovies(){
-
         FetchMovieTask movieTask = new FetchMovieTask();
-        movieTask.execute();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String order_by = prefs.getString(getString(R.string.pref_order_by_key), getString(R.string.pref_order_by_default));
+        movieTask.execute(order_by);
 
     }
 
@@ -125,16 +128,19 @@ public class MainActivityFragment extends Fragment {
 
     }
 
-        public class FetchMovieTask extends AsyncTask<MovieItem, Void, MovieItem[]>{
+        public class FetchMovieTask extends AsyncTask<String, Void, MovieItem[]>{
 
             private final String LOG_TAG = MainActivityFragment.class.getSimpleName();
 
-            protected MovieItem[] doInBackground(MovieItem ... params){
+            private String ORDER_BY;
+
+            protected MovieItem[] doInBackground(String ... params){
                 if(params.length == 0){
                     System.err.println("Inside where the API is called");
-
+                    return null;
                 }
-
+                //Getting order by decision from settings
+                ORDER_BY = params[0];
                 //These two need to be declared outside the try/catch
                 //so that they can be closed in the finally block
                 HttpURLConnection urlConnection = null;
@@ -143,7 +149,7 @@ public class MainActivityFragment extends Fragment {
                 // Will contain the raw JSON response as a string
                 String movieJsonStr = null;
                 try{
-                    String POP_MOVIE_URL = "https://api.themoviedb.org/3/movie/top_rated?api_key=" + API_KEY;
+                    String POP_MOVIE_URL = "https://api.themoviedb.org/3/movie/" + ORDER_BY + "?api_key=" + API_KEY;
                     Uri builtUri = Uri.parse(POP_MOVIE_URL);
                     URL url = new URL(builtUri.toString());
 
@@ -212,6 +218,10 @@ public class MainActivityFragment extends Fragment {
                 final String MDB_TITLE = "title";
                 final String MDB_IMAGE_URL = "poster_path";
                 final String MDB_ID = "id";
+                final String MDB_INFO = "overview";
+                final String MDB_IMAGE_POSTER = "backdrop_path";
+                final String MDB_RELEASE_DATE = "release_date";
+                final String MDB_VOTE_AVG = "vote_average";
 
                 JSONObject movieJson = new JSONObject(movieJsonStr);
                 JSONArray movieArray = movieJson.getJSONArray(MDB_RESULTS);
@@ -229,7 +239,12 @@ public class MainActivityFragment extends Fragment {
 
                         MovieItem m = new MovieItem(
                                 rec.getString(MDB_TITLE),
-                                new URL("https://image.tmdb.org/t/p/w500/" + rec.getString(MDB_IMAGE_URL))
+                                new URL("https://image.tmdb.org/t/p/w500/" + rec.getString(MDB_IMAGE_URL)),
+                                rec.getInt(MDB_ID),
+                                new URL("https://image.tmdb.org/t/p/w1280/" + rec.getString(MDB_IMAGE_POSTER)),
+                                rec.getString(MDB_INFO),
+                                rec.getString(MDB_RELEASE_DATE),
+                                rec.getDouble(MDB_VOTE_AVG)
                         );
                         results.add(m);
                     } catch( MalformedURLException e) {

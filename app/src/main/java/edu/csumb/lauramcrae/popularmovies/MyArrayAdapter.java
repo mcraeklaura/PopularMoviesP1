@@ -66,7 +66,7 @@ public class MyArrayAdapter extends ArrayAdapter<MovieItem> {
 
 
         ImageView imageView = (ImageView) convertView.findViewById(R.id.list_movie_item);
-        Picasso.with(c).load(movieItem.image.toString()).into(imageView);
+        Picasso.with(c).load(movieItem.getImage().toString()).into(imageView);
 
         return convertView;
     }
